@@ -6,6 +6,10 @@ from django.utils.text import slugify
 
 # Create your models here.
 
+class Country(models.Model):
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=2)
+
 class Address(models.Model):
     street = models.CharField(max_length=80)
     postal_code = models.CharField(max_length=5)
@@ -41,6 +45,7 @@ class Book(models.Model):
     is_bestselling = models.BooleanField(default=False)
     # Harry Potter 1 => harry-potter-1
     slug = models.SlugField(default="", blank=True, null=False, db_index=True)
+    published_countries = models.ManyToManyField(Country)
 
     def get_absolute_url(self):
         return reverse("book_detail", args=[self.slug])
@@ -51,3 +56,5 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.rating})"
+    
+
